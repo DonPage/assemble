@@ -1,9 +1,9 @@
 import test from 'ava';
-import fn from '.';
+import assemble from '.';
 
-test('title', t => {
-	const err = t.throws(() => fn(123), TypeError);
-	t.is(err.message, 'Expected a string, got number');
-
-	t.is(fn('unicorns'), 'unicorns & rainbows');
+test('_buildConfig', t => {
+	const a = assemble(true);
+	console.log(`a.buildConfig`);
+	console.log(a.buildConfig);
+	t.true(true);
 });
