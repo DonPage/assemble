@@ -1,0 +1,29 @@
+{
+  "name": "assemble",
+  "version": "0.0.0",
+  "description": "Standalone builder for Selenium-webdriver.",
+  "license": "MIT",
+  "repository": "DonPage/assemble",
+  "author": {
+    "name": "",
+    "email": "don.page.work@gmail.com",
+    "url": "github.com/DonPage"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "test": "xo && ava"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    ""
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "ava": "^0.17.0",
+    "xo": "^0.17.0"
+  }
+}
