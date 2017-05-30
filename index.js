@@ -17,6 +17,12 @@ const _config = {
 	}
 };
 
+const _targets = {
+	browserstack: 'browserstack',
+	local: 'local',
+	grid: 'grid'
+};
+
 const _buildConfig = (config = {}) => {
 	const builtConfig = {
 		device: {}
@@ -56,14 +62,31 @@ const _buildConfig = (config = {}) => {
 	return builtConfig;
 };
 
+const _determineTargetServer = config => {
+	config.server = config.server.toLowerCase().trim();
+
+	if (config.server.includes('localhost')) {
+		return _targets.local;
+	} else if (config.server.includes('browserstack')) {
+		return _targets.browserstack;
+	}
+
+	return _targets.grid;
+};
+
 module.exports = (selenium, config = {}) => {
 	if (!selenium) {
 		throw new TypeError(`Expected Selenium to be passed in.`);
 	}
 
+	// We need to determine what the target server is based on buildConfig
+	// (local, browserstack, or grid)
+	const builtConfig = _buildConfig(config);
+
 	return {
 		conf: config,
 		builder: null,
-		buildConfig: _buildConfig(config)
+		buildConfig: _buildConfig(config),
+		server: _determineTargetServer(builtConfig)
 	};
 };

@@ -1,6 +1,12 @@
 import test from 'ava';
 import assemble from '.';
 
+const _targets = {
+	browserstack: 'browserstack',
+	local: 'local',
+	grid: 'grid'
+};
+
 test('buildConfig will take env variables for browser, server, and project.', t => {
 	const customConfig = {
 		server: 'browserstack.com',
@@ -49,4 +55,20 @@ test('buildConfig will take in browserName, browser_version, and os_version if o
 	t.true(customConfig.browser_version === buildConfig.device.browser_version);
 	t.true(customConfig.os === buildConfig.device.os);
 	t.true(customConfig.os_version === buildConfig.device.os_version);
+});
+
+test('determineTargetServer will return localhost if localhost ip is passed in.', t => {
+	const customConfig = {
+		server: 'http://localhost:4444/wd/hub'
+	};
+	const target = assemble(true, customConfig).server;
+	t.true(_targets.local === target);
+});
+
+test('determineTargetServer will return browserstack if browserstack dns is passed in.', t => {
+	const customConfig = {
+		server: 'http://hub-cloud.browserstack.com/wd/hub'
+	};
+	const target = assemble(true, customConfig).server;
+	t.true(_targets.browserstack === target);
 });
