@@ -1,17 +1,5 @@
 'use strict';
 
-
-
-module.exports = (selenium, config = {}) => {
-
-	if (!selenium) {
-		throw new TypeError(`Expected Selenium to be passed in.`);
-	}
-
-	return config;
-};
-
-
 // default config
 const _config = {
 	server: 'http://localhost:4444/wd/hub',
@@ -25,7 +13,7 @@ const _config = {
 	},
 	build: () => {
 		const today = new Date();
-		return `${today.getDate()}-${today.getMonth()}-${today.getFullYear()}`
+		return `${today.getDate()}-${today.getMonth()}-${today.getFullYear()}`;
 	}
 };
 
@@ -44,8 +32,8 @@ const _buildConfig = (config = {}) => {
 	// Browserstack automation settings.
 	builtConfig['browserstack.debug'] = config.debug || _config.debug;
 	builtConfig['browserstack.video'] = config.video || _config.video;
-	builtConfig['browserstack.user'] = config.creds.user || '';
-	builtConfig['browserstack.key'] = config.creds.key || '';
+	// builtConfig['browserstack.user'] = config.creds.user || '';
+	// builtConfig['browserstack.key'] = config.creds.key || '';
 
 	// Check to see if user passed in a device,
 	// if so configure device settings.
@@ -56,15 +44,24 @@ const _buildConfig = (config = {}) => {
 
 	if (config.os) {
 		builtConfig.device.browserName = builtConfig.browser;
+		// eslint-disable-next-line camelcase
 		builtConfig.device.browser_version = config.browser_version || null;
 		builtConfig.device.os = config.os;
+		// eslint-disable-next-line camelcase
 		builtConfig.device.os_version = config.os_version || null;
 	}
 
-
-
-
-
+	return builtConfig;
 };
 
+module.exports = (selenium, config = {}) => {
+	if (!selenium) {
+		throw new TypeError(`Expected Selenium to be passed in.`);
+	}
 
+	return {
+		conf: config,
+		builder: null,
+		buildConfig: _buildConfig(config)
+	};
+};
