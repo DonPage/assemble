@@ -18,7 +18,9 @@ const _config = {
 };
 
 const _buildConfig = (config = {}) => {
-	const builtConfig = {};
+	const builtConfig = {
+		device: {}
+	};
 	// If nothing is set, lets set the ENV settings OR the defaults.
 	builtConfig.browser =
 		config.browser || process.env.BROWSER || _config.browser;

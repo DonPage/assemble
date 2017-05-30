@@ -27,3 +27,26 @@ test('buildConfig will take user config for browser, server, and project.', t =>
 	t.true(buildConfig.browser === customConfig.browser);
 	t.true(buildConfig.project === customConfig.project);
 });
+
+test('buildConfig will overwrite default build for user build', t => {
+	const customConfig = {build: 'USER-BUILD'};
+	const buildConfig = assemble(true, customConfig).buildConfig;
+	t.true(buildConfig.build === customConfig.build);
+});
+
+test('buildConfig will take in browserName, browser_version, and os_version if os is passed in.', t => {
+	const customConfig = {
+		browser: 'Edge',
+		// eslint-disable-next-line camelcase
+		browser_version: '14.0',
+		os: 'Windows',
+		// eslint-disable-next-line camelcase
+		os_version: '10'
+	};
+	const buildConfig = assemble(true, customConfig).buildConfig;
+	// customConfig.browser will be put into buildConfig.device.browserName.
+	t.true(customConfig.browser === buildConfig.device.browserName);
+	t.true(customConfig.browser_version === buildConfig.device.browser_version);
+	t.true(customConfig.os === buildConfig.device.os);
+	t.true(customConfig.os_version === buildConfig.device.os_version);
+});
