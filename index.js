@@ -75,11 +75,7 @@ const _determineTargetServer = config => {
 	return _targets.grid;
 };
 
-module.exports = (s, config = {}) => {
-	if (!s) {
-		throw new TypeError(`Expected Selenium to be passed in.`);
-	}
-
+module.exports = (config = {}) => {
 	const build = new selenium.Builder();
 
 	// We need to determine what the target server is based on buildConfig
