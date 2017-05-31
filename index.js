@@ -1,4 +1,5 @@
 'use strict';
+const selenium = require('selenium-webdriver');
 
 // default config
 const _config = {
@@ -74,19 +75,28 @@ const _determineTargetServer = config => {
 	return _targets.grid;
 };
 
-module.exports = (selenium, config = {}) => {
-	if (!selenium) {
+module.exports = (s, config = {}) => {
+	if (!s) {
 		throw new TypeError(`Expected Selenium to be passed in.`);
 	}
+
+	const build = new selenium.Builder();
 
 	// We need to determine what the target server is based on buildConfig
 	// (local, browserstack, or grid)
 	const builtConfig = _buildConfig(config);
+	if (_determineTargetServer(builtConfig) === _targets.local) {
+		build.usingServer(builtConfig.server);
+		build.forBrowser(builtConfig.browser.toLowerCase());
+	} else {
+		console.log(`could not find build target.`);
+	}
 
 	return {
 		conf: config,
 		builder: null,
 		buildConfig: _buildConfig(config),
-		server: _determineTargetServer(builtConfig)
+		server: _determineTargetServer(builtConfig),
+		webdriver: () => build.build()
 	};
 };

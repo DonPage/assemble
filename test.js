@@ -9,8 +9,8 @@ const _targets = {
 
 test('buildConfig will take env variables for browser, server, and project.', t => {
 	const customConfig = {
-		server: 'browserstack.com',
-		browser: 'Chrome',
+		server: 'http://localhost:4444/wd/hub',
+		browser: 'Firefox',
 		project: 'ENV-CONFIG'
 	};
 	process.env.SERVER = customConfig.server;
@@ -71,4 +71,12 @@ test('determineTargetServer will return browserstack if browserstack dns is pass
 	};
 	const target = assemble(true, customConfig).server;
 	t.true(_targets.browserstack === target);
+});
+
+test('test basic local build', async t => {
+	const webdriver = assemble(true).webdriver();
+	await webdriver.get('https://google.com/');
+	await webdriver.sleep(9000);
+	await webdriver.quit();
+	t.true(true);
 });
