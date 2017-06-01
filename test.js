@@ -1,6 +1,6 @@
 import test from 'ava';
 import assemble from '.';
-
+/* eslint max-len: ["off"] */
 const _targets = {
 	browserstack: 'browserstack',
 	local: 'local',
@@ -73,10 +73,19 @@ test('determineTargetServer will return browserstack if browserstack dns is pass
 	t.true(_targets.browserstack === target);
 });
 
-test('test basic local build', async t => {
-	const webdriver = assemble(true).webdriver();
+test('Basic local build', async t => {
+	const webdriver = assemble().webdriver();
 	await webdriver.get('https://google.com/');
 	await webdriver.sleep(9000);
 	await webdriver.quit();
 	t.true(true);
 });
+
+test('Basic Chrome build', async t => {
+	const webdriver = assemble({browser: 'Chrome'}).webdriver();
+	await webdriver.get('https://google.com/');
+	await webdriver.sleep(9000);
+	await webdriver.quit();
+	t.true(true);
+});
+

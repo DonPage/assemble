@@ -26,7 +26,8 @@ const _targets = {
 
 const _buildConfig = (config = {}) => {
 	const builtConfig = {
-		device: {}
+		device: {},
+		creds: {}
 	};
 	// If nothing is set, lets set the ENV settings OR the defaults.
 	builtConfig.browser =

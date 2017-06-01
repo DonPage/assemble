@@ -1,6 +1,7 @@
 {
   "extends": "xo",
   "rules": {
-	"camelcase": "warn"
+	"camelcase": "warn",
+	"max-len": ["error", 80]
   }
 }
