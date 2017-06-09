@@ -7,6 +7,7 @@ const _config = {
 	browser: 'Firefox',
 	debug: false,
 	video: true,
+	realMobile: true,
 	project: 'ProjectAssemble',
 	creds: {
 		user: '',
@@ -26,8 +27,10 @@ const _targets = {
 
 const _buildConfig = (config = {}) => {
 	const builtConfig = {
-		device: {},
-		creds: {}
+		creds: {
+			user: undefined,
+			key: undefined
+		}
 	};
 	// If nothing is set, lets set the ENV settings OR the defaults.
 	builtConfig.browser =
@@ -40,25 +43,27 @@ const _buildConfig = (config = {}) => {
 		config.build || _config.build();
 
 	// Browserstack automation settings.
+	const configCreds = config.creds || {};
 	builtConfig['browserstack.debug'] = config.debug || _config.debug;
 	builtConfig['browserstack.video'] = config.video || _config.video;
-	// builtConfig['browserstack.user'] = config.creds.user || '';
-	// builtConfig['browserstack.key'] = config.creds.key || '';
+	builtConfig['browserstack.user'] = configCreds.user || '';
+	builtConfig['browserstack.key'] = configCreds.key || '';
 
 	// Check to see if user passed in a device,
 	// if so configure device settings.
 	if (config.device) {
-		builtConfig.device.browserName = builtConfig.browser;
-		builtConfig.device.device = config.device;
+		builtConfig.browserName = builtConfig.browser;
+		builtConfig.device = config.device;
+		builtConfig.realMobile = config.realMobile || _config.realMobile;
 	}
 
 	if (config.os) {
-		builtConfig.device.browserName = builtConfig.browser;
+		builtConfig.browserName = builtConfig.browser;
 		// eslint-disable-next-line camelcase
-		builtConfig.device.browser_version = config.browser_version || null;
-		builtConfig.device.os = config.os;
+		builtConfig.browser_version = config.browser_version || null;
+		builtConfig.os = config.os;
 		// eslint-disable-next-line camelcase
-		builtConfig.device.os_version = config.os_version || null;
+		builtConfig.os_version = config.os_version || null;
 	}
 
 	return builtConfig;
@@ -85,6 +90,9 @@ module.exports = (config = {}) => {
 	if (_determineTargetServer(builtConfig) === _targets.local) {
 		build.usingServer(builtConfig.server);
 		build.forBrowser(builtConfig.browser.toLowerCase());
+	} else if (_determineTargetServer(builtConfig) === _targets.browserstack) {
+		build.usingServer('http://hub-cloud.browserstack.com/wd/hub');
+		build.withCapabilities(builtConfig);
 	} else {
 		console.log(`could not find build target.`);
 	}

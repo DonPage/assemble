@@ -1,6 +1,7 @@
 import test from 'ava';
 import assemble from '.';
 /* eslint max-len: ["off"] */
+/* eslint camelcase: ["off"] */
 const _targets = {
 	browserstack: 'browserstack',
 	local: 'local',
@@ -51,10 +52,10 @@ test('buildConfig will take in browserName, browser_version, and os_version if o
 	};
 	const buildConfig = assemble(customConfig).buildConfig;
 	// customConfig.browser will be put into buildConfig.device.browserName.
-	t.true(customConfig.browser === buildConfig.device.browserName);
-	t.true(customConfig.browser_version === buildConfig.device.browser_version);
-	t.true(customConfig.os === buildConfig.device.os);
-	t.true(customConfig.os_version === buildConfig.device.os_version);
+	t.true(customConfig.browser === buildConfig.browserName);
+	t.true(customConfig.browser_version === buildConfig.browser_version);
+	t.true(customConfig.os === buildConfig.os);
+	t.true(customConfig.os_version === buildConfig.os_version);
 });
 
 test('determineTargetServer will return localhost if localhost ip is passed in.', t => {
@@ -76,7 +77,7 @@ test('determineTargetServer will return browserstack if browserstack dns is pass
 test('Basic local build', async t => {
 	const webdriver = assemble().webdriver();
 	await webdriver.get('https://google.com/');
-	await webdriver.sleep(9000);
+	await webdriver.sleep(1000);
 	await webdriver.quit();
 	t.true(true);
 });
@@ -84,8 +85,25 @@ test('Basic local build', async t => {
 test('Basic Chrome build', async t => {
 	const webdriver = assemble({browser: 'Chrome'}).webdriver();
 	await webdriver.get('https://google.com/');
-	await webdriver.sleep(9000);
+	await webdriver.sleep(1000);
 	await webdriver.quit();
+	t.true(true);
+});
+
+test('Browserstack build', async t => {
+	const creds = require('./secrets.json');
+	if (creds) {
+		const webdriver = assemble({
+			server: 'browserstack',
+			device: 'Google Pixel',
+			creds: creds,
+			debug: true
+		}).webdriver();
+		await webdriver.get('https://google.com/');
+		await webdriver.sleep(1000);
+		await webdriver.quit();
+		t.true(true);
+	}
 	t.true(true);
 });
 
