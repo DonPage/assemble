@@ -2,7 +2,7 @@
 const selenium = require('selenium-webdriver');
 
 // default config
-const _config = {
+const deConfig = {
 	server: 'http://localhost:4444/wd/hub',
 	browser: 'Firefox',
 	debug: false,
@@ -34,18 +34,18 @@ const _buildConfig = (config = {}) => {
 	};
 	// If nothing is set, lets set the ENV settings OR the defaults.
 	builtConfig.browser =
-		config.browser || process.env.BROWSER || _config.browser;
+		config.browser || process.env.BROWSER || deConfig.browser;
 	builtConfig.server =
-		config.server || process.env.SERVER || _config.server;
+		config.server || process.env.SERVER || deConfig.server;
 	builtConfig.project =
-		config.project || process.env.PROJECT || _config.project;
+		config.project || process.env.PROJECT || deConfig.project;
 	builtConfig.build =
-		config.build || _config.build();
+		config.build || deConfig.build();
 
 	// Browserstack automation settings.
 	const configCreds = config.creds || {};
-	builtConfig['browserstack.debug'] = config.debug || _config.debug;
-	builtConfig['browserstack.video'] = config.video || _config.video;
+	builtConfig['browserstack.debug'] = config.debug || deConfig.debug;
+	builtConfig['browserstack.video'] = config.video || deConfig.video;
 	builtConfig['browserstack.user'] = configCreds.user || '';
 	builtConfig['browserstack.key'] = configCreds.key || '';
 
@@ -54,7 +54,7 @@ const _buildConfig = (config = {}) => {
 	if (config.device) {
 		builtConfig.browserName = builtConfig.browser;
 		builtConfig.device = config.device;
-		builtConfig.realMobile = config.realMobile || _config.realMobile;
+		builtConfig.realMobile = config.realMobile || deConfig.realMobile;
 	}
 
 	if (config.os) {
