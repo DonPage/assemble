@@ -1,12 +1,12 @@
 # assemble
 
-> Standalone builder for Selenium-webdriver.
+> Standalone builder for Selenium-webdriver. Assemble makes it easy to get a webdriver instance with minimal configurations.
 
 
 ## Install
 
 ```
-$ npm install --save assemble
+$ npm install --save assemble-driver
 ```
 
 
@@ -19,8 +19,8 @@ const buildConfig = {
 }
 const assemble = require('assemble');
 
-assemble(buildConfig);
-//=> WebDriver instance
+assemble(buildConfig).webdriver();
+//=> Selenium WebDriver instance
 ```
 
 
@@ -44,30 +44,7 @@ _These options should be a json format._
 | video | `boolean` | true | Record browser. (browserstack) |
 | project | `string` | ProjectAssemble | Project Name |
 | build | `string` | (today's date) | Build Name |
-| creds |  `Object` | ~ | User and Key |
-
-
-
-
-
-### StackObject
-_Browserstack example configs: https://www.browserstack.com/automate/node#setting-os-and-browser_
-```js
-// example desktop config
-const windows_7_IE11 = {
-  'browserName' : 'IE',
-  'browser_version' : '11.0',
-  'os' : 'Windows',
-  'os_version' : '10',
-};
-// OR example mobile config
-const android_nexus6_Chrome = {
-  'browserName' : 'android',
-  'platform' : 'ANDROID',
-  'device' : 'Google Nexus 5'
-};
-```
-
+| creds |  `Object` | ~ | Cloud or grid creds: `{user, key}` |
 
 
 ## License
