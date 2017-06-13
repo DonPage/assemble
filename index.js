@@ -102,6 +102,7 @@ module.exports = (config = {}) => {
 		builder: null,
 		buildConfig: _buildConfig(config),
 		server: _determineTargetServer(builtConfig),
+		test: require('selenium-webdriver/testing'),
 		webdriver: () => build.build()
 	};
 };
