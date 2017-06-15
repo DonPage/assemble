@@ -1,6 +1,6 @@
 {
   "name": "assemble-driver",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Standalone builder for Selenium-webdriver.",
   "license": "MIT",
   "repository": "DonPage/assemble",

@@ -17,7 +17,7 @@ const buildConfig = {
 	server: 'http://localhost:4444/wd/hub',
 	browser: 'Chrome'
 }
-const assemble = require('assemble');
+const assemble = require('assemble-driver');
 
 assemble(buildConfig).webdriver();
 //=> Selenium WebDriver instance
